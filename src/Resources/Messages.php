@@ -78,8 +78,40 @@ class Messages
         return $response->getBody();
     }
 
-    public function send()
+    /**
+     * Send a message using the ToucanText REST API
+     *
+     * @param  array  $message
+     *
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function send($message = [])
     {
-        //
+        if (!isset($message['destinationAddress']))
+            throw new \Exception('Please specify a destination address');
+
+        if (!isset($message['message']))
+            throw new \Exception('Please specify a message');
+
+        $params = [
+            'USERNAME' => $this->client->getUsername(),
+            'PASSWORD' => $this->client->getPassword(),
+            'DESTADDR' => $message['destinationAddress'],
+            'MESSAGE' => $message['message'],
+        ];
+
+        if (isset($message['sourceAddress']))
+            $params['SOURCEADDR'] = $message['sourceAddress'];
+
+        if (isset($message['deliveryReceipt']) && $message['deliveryReceipt'] == true)
+            $params['REQUESTDLR'] = 'true';
+
+        $query = http_build_query($params);
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', 'https://api.toucantext.com/bin/send.json?' . urldecode($query));
+
+        return $response->getBody();
     }
 }
