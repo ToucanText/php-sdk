@@ -50,6 +50,22 @@ class Client
     }
 
     /**
+     * Get the username
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Get the password
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
      * Set the client username for authentication calls
      *
      * @param  string  $username
