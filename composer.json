@@ -1,0 +1,26 @@
+{
+    "name": "toucantext/php-sdk",
+    "description": "The ToucanText PHP SDK is a simple to use interface to help you send and retrieve messages quickly and efficiently.",
+    "authors": [
+        {
+            "name": "ToucanText",
+            "email": "info@toucantext.com",
+            "homepage": "https://www.toucantext.com",
+            "role": "Vendor"
+        }
+    ],
+    "support": {
+        "email": "info@toucantext.com",
+        "issues": "https://github.com/ToucanText/php-sdk/issues",
+        "source": "https://github.com/ToucanText/php-sdk"
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ToucanText\\": "src/"
+        }
+    }
+}
