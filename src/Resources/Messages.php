@@ -24,18 +24,24 @@ class Messages
     /**
      * Get ALL messages (inbound and delivery receipts) from the ToucanText API
      *
+     * @param  bool  $ackMessages
      * @param  int  $maxMessageCount
      *
      * @return \Psr\Http\Message\StreamInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function all($maxMessageCount = 25)
+    public function all($ackMessages = false, $maxMessageCount = 25)
     {
-        $query = http_build_query([
+        $params = [
             'accountname' => $this->client->getUsername(),
             'password' => $this->client->getPassword(),
             'maxmessagecount' => $maxMessageCount,
-        ]);
+        ];
+
+        if ($ackMessages == true)
+            $params['ACKMESSAGES'] = 'true';
+
+        $query = http_build_query($params);
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://api2.toucantext.com/api/messages.json?' . urldecode($query));
@@ -47,12 +53,13 @@ class Messages
      * Get the specified messages (inbound OR delivery receipts) only
      *
      * @param  string  $messageType
+     * @param  bool  $ackMessages
      * @param  int  $maxMessageCount
      *
      * @return \Psr\Http\Message\StreamInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get($messageType = null, $maxMessageCount = 25)
+    public function get($messageType = null, $ackMessages = false, $maxMessageCount = 25)
     {
         if (($messageType != 'messagesOnly' || $messageType != 'dlrsOnly') && $messageType == null) {
             throw new \Exception('Please specify a valid message type');
@@ -69,6 +76,9 @@ class Messages
 
         if ($messageType == 'dlrsOnly')
             $params['dlrsonly'] = 'true';
+
+        if ($ackMessages == true)
+            $params['ACKMESSAGES'] = 'true';
 
         $query = http_build_query($params);
 
