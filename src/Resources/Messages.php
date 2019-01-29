@@ -115,7 +115,7 @@ class Messages
             $params['SOURCEADDR'] = $message['sourceAddress'];
 
         if (isset($message['deliveryReceipt']) && $message['deliveryReceipt'] == true)
-            $params['REQUESTDLR'] = 'true';
+            $params['DLR'] = true;
 
         $query = http_build_query($params);
 
