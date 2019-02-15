@@ -89,6 +89,42 @@ class Messages
     }
 
     /**
+     * Acknowledge the specified messages or messages in the array
+     *
+     * @param  array  $messages
+     *
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function acknowledge($messages = [])
+    {
+        // &ID=messageid&ID=messageid2
+
+        if (count($messages) == 0) {
+            throw  new \Exception('Please specify which message(s) you would like to acknowledge.');
+        }
+
+        $params = [
+            'accountname' => $this->client->getUsername(),
+            'password' => $this->client->getPassword(),
+        ];
+
+        $query = http_build_query($params);
+
+        $messagesToAcknowledge = "";
+
+        foreach ($messages as $message)
+        {
+            $messagesToAcknowledge .= "&ID=" . $message;
+        }
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', 'https://api2.toucantext.com/api/messages.json/ack?' . urldecode($query. $messagesToAcknowledge));
+
+        return $response->getBody();
+    }
+
+    /**
      * Send a message using the ToucanText REST API
      *
      * @param  array  $message
