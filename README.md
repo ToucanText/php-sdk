@@ -114,6 +114,22 @@ $message = [
 $toucan->messages->send($message);
 ```
 
+### Acknowledging delivery receipts and messages
+
+When you retrieve your inbound messages or delivery receipts, there is a MbStorageId element within the response of the query. This ID can be
+used to acknowledge messages and delivery receipts individually.
+
+To acknowledge a message or delivery receipt create an array with the ID's to acknowledge and then call the following:
+
+```php
+// array of message ID's to acknowledge
+$messages = [
+    245, 4564, 456
+];
+
+echo $toucan->messages->acknowledge($messages);
+```
+
 Handling Exceptions
 -------------------
 
