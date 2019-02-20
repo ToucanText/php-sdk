@@ -127,7 +127,7 @@ $messages = [
     245, 4564, 456
 ];
 
-echo $toucan->messages->acknowledge($messages);
+$toucan->messages->acknowledge($messages);
 ```
 
 Handling Exceptions
